@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Mechanics — Taller Mecánico en Calpe y Benissa</title>
+  <meta name="description" content="Taller mecánico rápido y de confianza en Calpe y Benissa. Diagnóstico, frenos, embrague, distribución, aceite, A/C y más. Fast Mechanics NR.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ══════════════════════════════════════════
+       DESIGN TOKENS — Electric Blue edition
+    ══════════════════════════════════════════ */
+    :root {
+      --bg:          #09090f;
+      --bg-surface:  #0f0f18;
+      --bg-card:     #13131e;
+      --bg-card-alt: #111119;
+      --accent:      #1A5FFF;
+      --accent-dim:  #1448cc;
+      --accent-glow: rgba(26, 95, 255, 0.14);
+      --accent-muted:rgba(26, 95, 255, 0.08);
+      --text:        #ECEEF5;
+      --text-muted:  #72748A;
+      --text-dim:    #3A3C50;
+      --border:      rgba(255,255,255,0.06);
+      --border-card: rgba(255,255,255,0.04);
+
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-label:   'Barlow Condensed', sans-serif;
+      --font-body:    'Barlow', sans-serif;
+    }
+
+    /* ══════════════════════════════════════════
+       RESET
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══════════════════════════════════════════
+       GRAIN OVERLAY
+    ══════════════════════════════════════════ */
+    #grain {
+      position: fixed;
+      inset: 0;
+      z-index: 998;
+      pointer-events: none;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+    }
+
+    /* ══════════════════════════════════════════
+       UTILITY
+    ══════════════════════════════════════════ */
+    .label {
+      font-family: var(--font-label);
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .section-label {
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 1.75rem;
+      height: 2px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .section-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ══════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════ */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease;
+      border-bottom: 1px solid transparent;
+    }
+    #navbar.scrolled {
+      background: rgba(9,9,15,0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+    .nav-logo-img {
+      height: 42px;
+      width: auto;
+      mix-blend-mode: screen;
+      filter: brightness(1.05);
+    }
+    .nav-wa {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.6rem 1.3rem;
+      border-radius: 2px;
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-wa:hover { background: var(--accent-dim); }
+
+    /* ══════════════════════════════════════════
+       FLOATING WHATSAPP
+    ══════════════════════════════════════════ */
+    .float-wa {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 90;
+      width: 3.4rem;
+      height: 3.4rem;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 4px 22px rgba(37,211,102,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .float-wa::before {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 2px solid rgba(37,211,102,0.35);
+      animation: wa-pulse 2.2s ease infinite;
+    }
+    @keyframes wa-pulse {
+      0%,100% { transform: scale(1); opacity: 0.7; }
+      55%      { transform: scale(1.18); opacity: 0; }
+    }
+    .float-wa:hover { transform: scale(1.07); box-shadow: 0 6px 30px rgba(37,211,102,0.48); }
+    .float-wa svg { width: 1.65rem; height: 1.65rem; }
+
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 8rem;
+      overflow: hidden;
+      clip-path: polygon(0 0, 100% 0, 100% 91%, 0 100%);
+      background:
+        linear-gradient(150deg, rgba(9,9,15,0.92) 0%, rgba(9,9,20,0.78) 55%, rgba(9,9,15,0.88) 100%),
+        url("https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1800&q=80") center/cover no-repeat;
+    }
+
+    /* Diagonal stripe pattern */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -52deg,
+        transparent,
+        transparent 28px,
+        rgba(26, 95, 255, 0.028) 28px,
+        rgba(26, 95, 255, 0.028) 29px
+      );
+      pointer-events: none;
+    }
+    /* Bottom accent glow */
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40%;
+      background: linear-gradient(to top, rgba(26,95,255,0.05) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* Ghost text */
+    .hero-ghost {
+      position: absolute;
+      right: -2%;
+      bottom: 6%;
+      font-family: var(--font-display);
+      font-size: clamp(160px, 26vw, 400px);
+      line-height: 1;
+      color: rgba(255,255,255,0.025);
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+    .hero-eyebrow {
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.1rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 2px;
+      background: var(--accent);
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 13vw, 12rem);
+      line-height: 0.88;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.75rem;
+    }
+    .hero-headline .l1,
+    .hero-headline .l2 {
+      display: block;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.16,1,0.3,1);
+    }
+    .hero-headline .l2 {
+      color: var(--accent);
+      transition-delay: 0.18s;
+    }
+    .hero-headline.anim-in .l1,
+    .hero-headline.anim-in .l2 { opacity: 1; transform: translateY(0); }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: rgba(236,238,245,0.7);
+      max-width: 48ch;
+      margin-bottom: 2.75rem;
+      line-height: 1.75;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease 0.38s, transform 0.65s cubic-bezier(0.16,1,0.3,1) 0.38s;
+    }
+    .hero-sub.anim-in { opacity: 1; transform: translateY(0); }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease 0.55s, transform 0.6s cubic-bezier(0.16,1,0.3,1) 0.55s;
+    }
+    .hero-actions.anim-in { opacity: 1; transform: translateY(0); }
+
+    /* Locations strip in hero */
+    .hero-locations {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease 0.7s, transform 0.6s ease 0.7s;
+    }
+    .hero-locations.anim-in { opacity: 1; transform: translateY(0); }
+    .hero-loc {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-label);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .hero-loc svg { width: 0.9rem; height: 0.9rem; color: var(--accent); flex-shrink: 0; }
+    .hero-loc-sep {
+      width: 1px;
+      height: 1rem;
+      background: var(--text-dim);
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 2rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: hint-in 0.6s ease 1.3s forwards;
+    }
+    @keyframes hint-in { to { opacity: 1; } }
+    .scroll-hint span {
+      writing-mode: vertical-rl;
+      font-family: var(--font-label);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ══════════════════════════════════════════
+       BUTTONS
+    ══════════════════════════════════════════ */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.95rem 2.1rem;
+      border-radius: 2px;
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent-dim); transform: translateY(-2px); }
+    .btn-primary:active { transform: scale(0.98) translateY(0); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-family: var(--font-label);
+      font-weight: 600;
+      font-size: 0.88rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-bottom: 1px solid var(--text-dim);
+      padding-bottom: 3px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--text-muted); }
+
+    /* ══════════════════════════════════════════
+       MARQUEE STRIP
+    ══════════════════════════════════════════ */
+    .marquee-strip {
+      background: var(--accent);
+      padding: 0.65rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      z-index: 3;
+    }
+    .marquee-track {
+      display: inline-block;
+      animation: marquee-run 30s linear infinite;
+    }
+    .marquee-track span {
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.88);
+      padding: 0 2.5rem;
+    }
+    .marquee-track span.sep {
+      padding: 0;
+      color: rgba(255,255,255,0.4);
+    }
+    @keyframes marquee-run {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ══════════════════════════════════════════
+       PHOTO STRIP — engine close-up
+    ══════════════════════════════════════════ */
+    .photo-strip {
+      height: 320px;
+      background:
+        linear-gradient(to right, rgba(9,9,15,0.85) 0%, rgba(9,9,15,0.4) 40%, rgba(9,9,15,0.4) 60%, rgba(9,9,15,0.85) 100%),
+        url("https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .photo-strip-text {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .photo-strip-text h3 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+    .photo-strip-text h3 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .photo-strip-text p {
+      font-family: var(--font-label);
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+    }
+
+    /* ══════════════════════════════════════════
+       SERVICES
+    ══════════════════════════════════════════ */
+    #servicios {
+      padding: 7rem 0 6rem;
+      background: var(--bg-surface);
+    }
+
+    .servicios-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-bottom: 4rem;
+    }
+    .servicios-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      margin-bottom: 1.25rem;
+    }
+    .servicios-desc {
+      color: var(--text-muted);
+      font-size: 0.975rem;
+      line-height: 1.75;
+    }
+
+    /* Photo right side */
+    .servicios-photo-wrap {
+      position: relative;
+      height: 380px;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .servicios-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.85) contrast(1.05);
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .servicios-photo-wrap:hover img { transform: scale(1.03); }
+    .servicios-photo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(26,95,255,0.18);
+      pointer-events: none;
+    }
+
+    /* Services grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      border: 1px solid var(--border-card);
+      background: var(--border-card);
+      gap: 1px;
+    }
+    .service-card {
+      background: var(--bg-card);
+      padding: 2.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(22px);
+      transition:
+        opacity 0.55s ease,
+        transform 0.55s cubic-bezier(0.16,1,0.3,1),
+        background 0.25s ease;
+    }
+    .service-card.reveal { opacity: 1; transform: translateY(0); }
+    .service-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.32s cubic-bezier(0.16,1,0.3,1);
+    }
+    .service-card:hover { background: #16162a; }
+    .service-card:hover::after { transform: scaleX(1); }
+    .service-card:hover .s-icon { color: var(--accent); }
+
+    .s-num {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      line-height: 1;
+      color: rgba(255,255,255,0.03);
+      pointer-events: none;
+      user-select: none;
+    }
+    .s-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: color 0.25s;
+    }
+    .s-name {
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .s-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .service-card--cta {
+      background: var(--accent-muted);
+      border: 1px solid rgba(26,95,255,0.18);
+    }
+    .service-card--cta .s-icon { color: var(--accent); }
+    .service-card--cta .s-name { color: var(--accent); }
+    .service-card--cta .s-num { color: rgba(26,95,255,0.08); }
+    .service-card--cta:hover { background: rgba(26,95,255,0.12); }
+
+    /* ══════════════════════════════════════════
+       WHY US
+    ══════════════════════════════════════════ */
+    #por-que {
+      padding: 7rem 0;
+      background: var(--bg);
+    }
+    .por-que-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: end;
+      margin-bottom: 4rem;
+    }
+    .por-que-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 0.95;
+    }
+    .por-que-desc {
+      color: var(--text-muted);
+      font-size: 0.975rem;
+      line-height: 1.75;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+    }
+    .trust-item {
+      padding: 3rem 2.25rem;
+      border-right: 1px solid var(--border);
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity 0.55s ease,
+        transform 0.55s cubic-bezier(0.16,1,0.3,1);
+    }
+    .trust-item:last-child { border-right: none; }
+    .trust-item.reveal { opacity: 1; transform: translateY(0); }
+    .trust-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.38s cubic-bezier(0.16,1,0.3,1);
+    }
+    .trust-item:hover::before { transform: scaleX(1); }
+    .t-icon {
+      width: 2rem;
+      height: 2rem;
+      color: var(--accent);
+      margin-bottom: 1.75rem;
+    }
+    .t-title {
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .t-desc {
+      font-size: 0.865rem;
+      color: var(--text-muted);
+      line-height: 1.72;
+    }
+
+    /* ══════════════════════════════════════════
+       LOCATIONS
+    ══════════════════════════════════════════ */
+    #ubicaciones {
+      padding: 5rem 0;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .ubicaciones-grid {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 0;
+      align-items: center;
+    }
+    .ubicaciones-divider {
+      background: var(--border);
+      height: 80%;
+      align-self: center;
+    }
+    .ubicacion-item {
+      padding: 2rem 3rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .ubicacion-item.reveal { opacity: 1; transform: translateY(0); }
+    .ubicacion-item:last-child { transition-delay: 0.12s; }
+    .ubicacion-tag {
+      color: var(--accent);
+      font-family: var(--font-label);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .ubicacion-tag::before {
+      content: '';
+      display: block;
+      width: 1.25rem;
+      height: 2px;
+      background: var(--accent);
+    }
+    .ubicacion-name {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+    .ubicacion-addr {
+      font-family: var(--font-label);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+    .ubicacion-phone {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      font-family: var(--font-label);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .ubicacion-phone:hover { color: var(--accent); }
+    .ubicacion-phone svg { width: 1rem; height: 1rem; color: var(--accent); }
+
+    /* ══════════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════════ */
+    #contacto {
+      padding: 8rem 0;
+      background: var(--bg);
+      clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);
+      margin-top: -3rem;
+    }
+    .cta-layout {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 5rem;
+      align-items: center;
+    }
+    .cta-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 8vw, 8rem);
+      line-height: 0.92;
+    }
+    .cta-headline em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .cta-sub {
+      margin-top: 1.75rem;
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 48ch;
+      line-height: 1.72;
+    }
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+      min-width: 230px;
+    }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      background: #25D366;
+      color: #fff;
+      padding: 1.05rem 2rem;
+      border-radius: 2px;
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-wa:hover { background: #1fad54; transform: translateY(-2px); }
+    .btn-wa:active { transform: scale(0.98); }
+    .btn-ig {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 0.875rem 2rem;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      font-family: var(--font-label);
+      font-weight: 600;
+      font-size: 0.88rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ig:hover { border-color: var(--text-muted); color: var(--text); }
+
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    footer {
+      background: #060609;
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+    }
+    .footer-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 2rem;
+    }
+    .footer-logo-img {
+      height: 38px;
+      width: auto;
+      mix-blend-mode: screen;
+      filter: brightness(0.85);
+    }
+    .footer-nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .footer-nav a {
+      font-family: var(--font-label);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--accent); }
+    .footer-copy {
+      font-family: var(--font-label);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      text-align: right;
+    }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .trust-grid { grid-template-columns: repeat(2, 1fr); }
+      .trust-item:nth-child(2) { border-right: none; }
+      .trust-item:nth-child(1),
+      .trust-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+      .por-que-header { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      #hero {
+        clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+        padding-bottom: 6rem;
+      }
+      .servicios-header { grid-template-columns: 1fr; }
+      .servicios-photo-wrap { height: 260px; }
+      .cta-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .cta-buttons { min-width: auto; width: 100%; max-width: 340px; }
+      #contacto { clip-path: polygon(0 3%, 100% 0, 100% 100%, 0 100%); }
+      .ubicaciones-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .ubicaciones-divider { display: none; }
+      .ubicacion-item { padding: 1.5rem 0; }
+      .ubicacion-item:first-child { border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+      .footer-inner { grid-template-columns: 1fr; text-align: center; }
+      .footer-nav { justify-content: center; }
+      .footer-copy { text-align: center; }
+      .hero-loc-sep { display: none; }
+      #navbar { padding: 0.85rem 1.25rem; }
+    }
+
+    @media (max-width: 580px) {
+      .trust-grid { grid-template-columns: 1fr; }
+      .trust-item { border-right: none !important; border-bottom: 1px solid var(--border); }
+      .trust-item:last-child { border-bottom: none; }
+      .trust-item:nth-child(1),
+      .trust-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+      .photo-strip { height: 220px; }
+      .scroll-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Grain overlay -->
+<div id="grain" aria-hidden="true"></div>
+
+<!-- ── FLOATING WHATSAPP ─────────────────── -->
+<a href="https://wa.me/34627568631"
+   class="float-wa"
+   target="_blank" rel="noopener noreferrer"
+   aria-label="Contactar por WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<!-- ── NAV ───────────────────────────────── -->
+<nav id="navbar" aria-label="Navegación principal">
+  <a href="#" class="nav-logo" aria-label="Fast Mechanics — Inicio">
+    <img
+      src="WhatsApp Image 2026-04-14 at 13.48.39.jpeg"
+      alt="Fast Mechanics"
+      class="nav-logo-img"
+    >
+  </a>
+  <a href="https://wa.me/34627568631"
+     class="nav-wa"
+     target="_blank" rel="noopener noreferrer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    627 568 631
+  </a>
+</nav>
+
+<!-- ── HERO ──────────────────────────────── -->
+<section id="hero" aria-label="Inicio">
+  <div class="hero-ghost" aria-hidden="true">NR</div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow label">Taller mecánico · Calpe &amp; Benissa</p>
+
+    <h1 class="hero-headline" id="js-headline">
+      <span class="l1">Tu Mecánica</span>
+      <span class="l2">de Confianza</span>
+    </h1>
+
+    <p class="hero-sub" id="js-sub">
+      Diagnóstico, reparación y mantenimiento con rapidez y garantía.<br>
+      En Fast Mechanics lo hacemos bien desde la primera vez.
+    </p>
+
+    <div class="hero-actions" id="js-actions">
+      <a href="https://wa.me/34627568631"
+         class="btn-primary"
+         target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Pedir Presupuesto
+      </a>
+      <a href="#servicios" class="btn-ghost">
+        Ver servicios
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="hero-locations" id="js-locs">
+      <span class="hero-loc">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Calpe
+      </span>
+      <span class="hero-loc-sep" aria-hidden="true"></span>
+      <span class="hero-loc">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Benissa
+      </span>
+    </div>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-dim)">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ── MARQUEE ────────────────────────────── -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Mecánica Rápida</span><span class="sep">·</span>
+    <span>Amortiguadores</span><span class="sep">·</span>
+    <span>Frenos</span><span class="sep">·</span>
+    <span>Embrague</span><span class="sep">·</span>
+    <span>Distribución</span><span class="sep">·</span>
+    <span>Cambio de Aceite</span><span class="sep">·</span>
+    <span>Diagnóstico</span><span class="sep">·</span>
+    <span>Aire Acondicionado</span><span class="sep">·</span>
+    <span>Electricidad</span><span class="sep">·</span>
+    <span>Neumáticos</span><span class="sep">·</span>
+    <span>Presupuesto Gratis</span><span class="sep">·</span>
+    <span>Mecánica Rápida</span><span class="sep">·</span>
+    <span>Amortiguadores</span><span class="sep">·</span>
+    <span>Frenos</span><span class="sep">·</span>
+    <span>Embrague</span><span class="sep">·</span>
+    <span>Distribución</span><span class="sep">·</span>
+    <span>Cambio de Aceite</span><span class="sep">·</span>
+    <span>Diagnóstico</span><span class="sep">·</span>
+    <span>Aire Acondicionado</span><span class="sep">·</span>
+    <span>Electricidad</span><span class="sep">·</span>
+    <span>Neumáticos</span><span class="sep">·</span>
+    <span>Presupuesto Gratis</span><span class="sep">·</span>
+  </div>
+</div>
+
+<!-- ── ENGINE PHOTO STRIP ────────────────── -->
+<div class="photo-strip" aria-hidden="true">
+  <div class="photo-strip-text">
+    <h3>Pasión por la <em>Mecánica</em></h3>
+    <p>Diagnóstico preciso · Reparación garantizada · Entrega rápida</p>
+  </div>
+</div>
+
+<!-- ── SERVICES ───────────────────────────── -->
+<section id="servicios" aria-labelledby="servicios-title">
+  <div class="section-inner">
+
+    <div class="servicios-header">
+      <div>
+        <p class="section-label label">Nuestros Servicios</p>
+        <h2 class="servicios-headline" id="servicios-title">Lo Que<br>Hacemos</h2>
+        <p class="servicios-desc">
+          Desde el diagnóstico hasta la reparación completa.<br>
+          Especialistas en mantenimiento preventivo y correctivo para todos los vehículos.
+        </p>
+      </div>
+
+      <div class="servicios-photo-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80"
+          alt="Mecánico trabajando con herramientas"
+          loading="lazy"
+        >
+      </div>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- 01 Mecánica general -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">01</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+        <div>
+          <p class="s-name">Mecánica Rápida</p>
+          <p class="s-desc">Mantenimiento general y reparaciones en el día. Trabajamos con todas las marcas y modelos.</p>
+        </div>
+      </div>
+
+      <!-- 02 Amortiguadores -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">02</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2v4M12 18v4M4 12H2M22 12h-2"/>
+          <rect x="8" y="7" width="8" height="10" rx="1"/>
+          <path d="M8 10h8M8 14h8"/>
+        </svg>
+        <div>
+          <p class="s-name">Amortiguadores</p>
+          <p class="s-desc">Diagnóstico, reemplazo y puesta a punto de amortiguadores delanteros y traseros.</p>
+        </div>
+      </div>
+
+      <!-- 03 Bandejas -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">03</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 12h20M6 8l-4 4 4 4M18 8l4 4-4 4"/>
+          <circle cx="12" cy="12" r="2"/>
+        </svg>
+        <div>
+          <p class="s-name">Bandejas y Suspensión</p>
+          <p class="s-desc">Reparación y reemplazo de bandejas y componentes de suspensión. Alineación incluida.</p>
+        </div>
+      </div>
+
+      <!-- 04 Masa -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">04</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
+        </svg>
+        <div>
+          <p class="s-name">Masa / Hubs</p>
+          <p class="s-desc">Reemplazo de cubos de rueda y rodamientos. Eliminamos ruidos, vibraciones y juego.</p>
+        </div>
+      </div>
+
+      <!-- 05 Frenos -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">05</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 3v2M12 19v2M3 12h2M19 12h2"/>
+        </svg>
+        <div>
+          <p class="s-name">Frenos</p>
+          <p class="s-desc">Pastillas, discos, líquido y revisión completa del sistema de frenado. Seguridad garantizada.</p>
+        </div>
+      </div>
+
+      <!-- 06 Embrague -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">06</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="7" cy="12" r="4"/>
+          <circle cx="17" cy="12" r="4"/>
+          <path d="M7 8V5M7 19v-3M17 8V5M17 19v-3"/>
+        </svg>
+        <div>
+          <p class="s-name">Kit de Embrague</p>
+          <p class="s-desc">Disco, plato de presión y rodamiento de empuje. Servicio completo con garantía.</p>
+        </div>
+      </div>
+
+      <!-- 07 Distribución -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">07</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <path d="M17 17h.01M17.5 10v4h-4"/>
+        </svg>
+        <div>
+          <p class="s-name">Kit de Distribución</p>
+          <p class="s-desc">Correa o cadena, tensor y polea tensora. Prevención de averías mayores.</p>
+        </div>
+      </div>
+
+      <!-- 08 Cambio de aceite -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">08</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2v6l3 3-3 3v6"/>
+          <path d="M6 9h2M6 15h2M16 9h2M16 15h2"/>
+          <rect x="5" y="5" width="14" height="14" rx="2"/>
+        </svg>
+        <div>
+          <p class="s-name">Aceite y Filtros</p>
+          <p class="s-desc">Cambio de aceite, filtro de aceite, aire, habitáculo y combustible. Revisión completa incluida.</p>
+        </div>
+      </div>
+
+      <!-- 09 Motor de partida / alternador -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">09</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        <div>
+          <p class="s-name">Motor de Arranque y Alternador</p>
+          <p class="s-desc">Diagnóstico, reparación o reemplazo del motor de partida y alternador. Sin sorpresas.</p>
+        </div>
+      </div>
+
+      <!-- 10 Aire acondicionado -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">10</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 2v4M12 2v4M16 2v4"/>
+          <path d="M3 10h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <path d="M7 14s.5 2 2.5 2S12 14 12 14s.5 2 2.5 2S17 14 17 14"/>
+        </svg>
+        <div>
+          <p class="s-name">Aire Acondicionado</p>
+          <p class="s-desc">Carga de gas, diagnóstico del compresor y reparación completa del sistema de A/C.</p>
+        </div>
+      </div>
+
+      <!-- 11 Diagnóstico y electricidad -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">11</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <path d="M8 21h8M12 17v4"/>
+          <path d="M9 8l2 2 4-4"/>
+        </svg>
+        <div>
+          <p class="s-name">Diagnóstico y Electricidad</p>
+          <p class="s-desc">Escáner OBD, reparación eléctrica, batería y sistemas electrónicos del vehículo.</p>
+        </div>
+      </div>
+
+      <!-- 12 Neumáticos -->
+      <div class="service-card">
+        <span class="s-num" aria-hidden="true">12</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2"/>
+        </svg>
+        <div>
+          <p class="s-name">Neumáticos</p>
+          <p class="s-desc">Montaje, equilibrado, alineación y asesoramiento en la elección del neumático adecuado.</p>
+        </div>
+      </div>
+
+      <!-- CTA card -->
+      <div class="service-card service-card--cta">
+        <span class="s-num" aria-hidden="true">+</span>
+        <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v8M8 12h8"/>
+        </svg>
+        <div>
+          <p class="s-name">¿Necesitas otra cosa?</p>
+          <p class="s-desc">Si no ves tu reparación aquí, consúltanos. Trabajamos en todo lo que tu vehículo necesite.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY US ─────────────────────────────── -->
+<section id="por-que" aria-labelledby="por-que-title">
+  <div class="section-inner">
+
+    <div class="por-que-header">
+      <div>
+        <p class="section-label label">¿Por qué elegirnos?</p>
+        <h2 class="por-que-headline" id="por-que-title">Taller de<br>Confianza</h2>
+      </div>
+      <p class="por-que-desc">
+        Velocidad, calidad y honestidad en cada trabajo.<br>
+        Sabemos que tu tiempo y tu dinero valen. Por eso no hacemos perder ninguno de los dos.
+      </p>
+    </div>
+
+    <div class="trust-grid">
+
+      <div class="trust-item">
+        <svg class="t-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <p class="t-title">Rapidez</p>
+        <p class="t-desc">La mayoría de los servicios los resolvemos en el día. Sin esperas innecesarias.</p>
+      </div>
+
+      <div class="trust-item">
+        <svg class="t-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+        <p class="t-title">Garantía</p>
+        <p class="t-desc">Todos nuestros trabajos tienen garantía. Repuestos de primera calidad, sin excepciones.</p>
+      </div>
+
+      <div class="trust-item">
+        <svg class="t-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        <p class="t-title">Precio Justo</p>
+        <p class="t-desc">Presupuesto sin cargo y precios claros. Sin sorpresas al recoger el vehículo.</p>
+      </div>
+
+      <div class="trust-item">
+        <svg class="t-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <p class="t-title">Diagnóstico Gratuito</p>
+        <p class="t-desc">Revisamos tu vehículo sin coste para que sepas exactamente qué necesita antes de decidir.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── LOCATIONS ──────────────────────────── -->
+<section id="ubicaciones" aria-label="Nuestras ubicaciones">
+  <div class="section-inner">
+    <div class="ubicaciones-grid">
+
+      <div class="ubicacion-item">
+        <p class="ubicacion-tag">Taller 1</p>
+        <h3 class="ubicacion-name">Calpe</h3>
+        <p class="ubicacion-addr">Avda. Puerto de Santa María, 18<br>Calpe, Alicante</p>
+        <a href="https://wa.me/34627568631" class="ubicacion-phone" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.38 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.77-.77a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          627 568 631
+        </a>
+      </div>
+
+      <div class="ubicaciones-divider" aria-hidden="true"></div>
+
+      <div class="ubicacion-item">
+        <p class="ubicacion-tag">Taller 2</p>
+        <h3 class="ubicacion-name">Benissa</h3>
+        <p class="ubicacion-addr">Carrer dels Obrers, 5<br>Benissa, Alicante</p>
+        <a href="https://wa.me/34627568631" class="ubicacion-phone" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.38 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.77-.77a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          627 568 631
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────── -->
+<section id="contacto" aria-label="Contacto">
+  <div class="section-inner">
+    <div class="cta-layout">
+
+      <div>
+        <p class="section-label label">Contacto</p>
+        <h2 class="cta-headline">
+          Hablemos<br><em>Ahora</em>
+        </h2>
+        <p class="cta-sub">
+          Pide tu presupuesto sin compromiso, resolvemos tus dudas o coordina la cita para tu vehículo — en Calpe o Benissa.
+        </p>
+      </div>
+
+      <div class="cta-buttons">
+        <a href="https://wa.me/34627568631"
+           class="btn-wa"
+           target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Escribir por WhatsApp
+        </a>
+
+        <a href="https://instagram.com/fast_mechanics_nr"
+           class="btn-ig"
+           target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          @fast_mechanics_nr
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <img
+      src="WhatsApp Image 2026-04-14 at 13.48.39.jpeg"
+      alt="Fast Mechanics"
+      class="footer-logo-img"
+    >
+
+    <nav class="footer-nav" aria-label="Links del pie">
+      <a href="#servicios">Servicios</a>
+      <a href="#por-que">Por qué elegirnos</a>
+      <a href="#ubicaciones">Ubicaciones</a>
+      <a href="https://instagram.com/fast_mechanics_nr" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://wa.me/34627568631" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </nav>
+
+    <p class="footer-copy">
+      &copy; 2025 Fast Mechanics NR<br>
+      Calpe &amp; Benissa · Valencia, España
+    </p>
+  </div>
+</footer>
+
+<!-- ── JAVASCRIPT ─────────────────────────── -->
+<script>
+  // Nav scroll state
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Hero entrance animations
+  const hero = () => {
+    document.getElementById('js-headline').classList.add('anim-in');
+    document.getElementById('js-sub').classList.add('anim-in');
+    document.getElementById('js-actions').classList.add('anim-in');
+    document.getElementById('js-locs').classList.add('anim-in');
+  };
+  document.readyState === 'complete'
+    ? setTimeout(hero, 120)
+    : window.addEventListener('load', () => setTimeout(hero, 120));
+
+  // Scroll reveal — staggered
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('reveal');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.service-card').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 50}ms`;
+    revealObs.observe(el);
+  });
+  document.querySelectorAll('.trust-item').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 90}ms`;
+    revealObs.observe(el);
+  });
+  document.querySelectorAll('.ubicacion-item').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 120}ms`;
+    revealObs.observe(el);
+  });
+</script>
+
+</body>
+</html>

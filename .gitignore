@@ -1,0 +1,5 @@
+taste-skill-main/
+.claude/
+*.log
+Thumbs.db
+.DS_Store
