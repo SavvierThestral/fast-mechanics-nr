@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicios — Fast Mechanics Calpe y Benissa</title>
+  <meta name="description" content="Todos los servicios de Fast Mechanics NR: mecánica rápida, frenos, embrague, distribución, amortiguadores, A/C, diagnóstico y más en Calpe y Benissa.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:          #09090f;
+      --bg-surface:  #0f0f18;
+      --bg-card:     #13131e;
+      --accent:      #1A5FFF;
+      --accent-dim:  #1448cc;
+      --accent-glow: rgba(26, 95, 255, 0.14);
+      --accent-muted:rgba(26, 95, 255, 0.08);
+      --text:        #ECEEF5;
+      --text-muted:  #72748A;
+      --text-dim:    #3A3C50;
+      --border:      rgba(255,255,255,0.06);
+      --font-display:'Bebas Neue', sans-serif;
+      --font-label:  'Barlow Condensed', sans-serif;
+      --font-body:   'Barlow', sans-serif;
+      --section-px:  clamp(1.25rem, 5vw, 5rem);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN ── */
+    #grain {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      opacity: 0.4;
+    }
+
+    /* ── FLOAT WA ── */
+    .float-wa {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: #25D366; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .float-wa:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+    .float-wa svg { width: 26px; height: 26px; }
+
+    /* ── NAV ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem var(--section-px);
+      transition: background 0.3s, backdrop-filter 0.3s, border-color 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+    #navbar.scrolled {
+      background: rgba(9,9,15,0.88);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-color: var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo-img { height: 64px; width: auto; mix-blend-mode: screen; filter: brightness(1.05); }
+    .nav-right { display: flex; align-items: center; gap: 1.75rem; }
+    .nav-home {
+      font-family: var(--font-label); font-weight: 700; font-size: 0.82rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+      text-decoration: none; padding: 0.6rem 0; border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-home:hover { color: var(--text); border-color: var(--accent); }
+    .nav-wa {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: var(--font-label); font-weight: 700; font-size: 0.82rem;
+      letter-spacing: 0.08em; color: #25D366; text-decoration: none;
+      border: 1px solid rgba(37,211,102,0.3); border-radius: 4px;
+      padding: 0.45rem 0.85rem; transition: background 0.2s, border-color 0.2s;
+    }
+    .nav-wa:hover { background: rgba(37,211,102,0.08); border-color: #25D366; }
+
+    /* ── HERO SERVICIOS ── */
+    .servicios-hero {
+      padding: calc(80px + 3rem) var(--section-px) 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .label {
+      font-family: var(--font-label); font-weight: 700; font-size: 0.72rem;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+    }
+    .servicios-hero h1 {
+      font-family: var(--font-display); font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.95; color: var(--text); margin-top: 0.6rem;
+    }
+    .servicios-hero p {
+      font-family: var(--font-body); font-size: 1rem; color: var(--text-muted);
+      margin-top: 1rem; max-width: 520px; line-height: 1.6;
+    }
+
+    /* ── GRID ── */
+    .servicios-section {
+      padding: 3rem var(--section-px) 5rem;
+      position: relative; z-index: 1;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0;
+    }
+    .service-card {
+      background: var(--bg-card);
+      padding: 1.75rem 1.5rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .service-card:hover { background: var(--bg-card-alt); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .s-num {
+      font-family: var(--font-display); font-size: 2.2rem;
+      color: var(--text-dim); line-height: 1;
+    }
+    .s-icon { width: 1.6rem; height: 1.6rem; color: var(--accent); flex-shrink: 0; }
+    .s-name {
+      font-family: var(--font-label); font-weight: 700; font-size: 0.95rem;
+      letter-spacing: 0.04em; text-transform: uppercase; color: var(--text);
+    }
+    .s-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; margin-top: 0.35rem; }
+
+    .service-card--cta { background: var(--accent-muted); }
+    .service-card--cta:hover { background: var(--accent-glow); }
+    .service-card--cta .s-num { color: var(--accent); }
+
+    /* ── CTA STRIP ── */
+    .cta-strip {
+      margin-top: 3rem; padding: 2rem; border: 1px solid var(--border);
+      border-radius: 4px; background: var(--bg-surface);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .cta-strip p { font-size: 1rem; color: var(--text-muted); max-width: 440px; line-height: 1.55; }
+    .cta-strip p strong { color: var(--text); }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-label); font-weight: 700; font-size: 0.88rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--accent); color: #fff; text-decoration: none;
+      padding: 0.8rem 1.5rem; border-radius: 4px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-wa:hover { background: var(--accent-dim); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem var(--section-px);
+    }
+    .footer-inner {
+      display: grid; grid-template-columns: auto 1fr auto;
+      align-items: center; gap: 2rem;
+    }
+    .footer-logo-img {
+      height: 52px; width: auto; mix-blend-mode: screen; filter: brightness(1.05); opacity: 0.85;
+    }
+    .footer-nav {
+      display: flex; flex-wrap: wrap; gap: 0.35rem 1.25rem; justify-content: center;
+    }
+    .footer-nav a {
+      font-family: var(--font-label); font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--accent); }
+    .footer-copy {
+      font-family: var(--font-label); font-size: 0.72rem;
+      letter-spacing: 0.08em; color: var(--text-dim); text-align: right;
+    }
+
+    @media (max-width: 768px) {
+      .footer-inner { grid-template-columns: 1fr; text-align: center; }
+      .footer-nav { justify-content: center; }
+      .footer-copy { text-align: center; }
+      .cta-strip { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="grain" aria-hidden="true"></div>
+
+<a href="https://wa.me/34627568631"
+   class="float-wa"
+   target="_blank" rel="noopener noreferrer"
+   aria-label="Contactar por WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<nav id="navbar" aria-label="Navegación principal">
+  <a href="index.html" class="nav-logo" aria-label="Fast Mechanics — Inicio">
+    <img src="logo.webp" alt="Fast Mechanics" class="nav-logo-img">
+  </a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-home">Inicio</a>
+    <a href="https://wa.me/34627568631"
+       class="nav-wa"
+       target="_blank" rel="noopener noreferrer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      627 568 631
+    </a>
+  </div>
+</nav>
+
+<header class="servicios-hero">
+  <p class="label">Fast Mechanics NR</p>
+  <h1>Todos<br>Nuestros<br>Servicios</h1>
+  <p>Diagnóstico, reparación y mantenimiento preventivo para todo tipo de vehículos. Calpe y Benissa.</p>
+</header>
+
+<main class="servicios-section">
+
+  <div class="services-grid">
+
+    <!-- 01 Mecánica general -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">01</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+      <div>
+        <p class="s-name">Mecánica Rápida</p>
+        <p class="s-desc">Mantenimiento general y reparaciones en el día. Trabajamos con todas las marcas y modelos.</p>
+      </div>
+    </div>
+
+    <!-- 02 Amortiguadores -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">02</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2v4M12 18v4M4 12H2M22 12h-2"/>
+        <rect x="8" y="7" width="8" height="10" rx="1"/>
+        <path d="M8 10h8M8 14h8"/>
+      </svg>
+      <div>
+        <p class="s-name">Amortiguadores</p>
+        <p class="s-desc">Diagnóstico, reemplazo y puesta a punto de amortiguadores delanteros y traseros.</p>
+      </div>
+    </div>
+
+    <!-- 03 Bandejas -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">03</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2 12h20M6 8l-4 4 4 4M18 8l4 4-4 4"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+      <div>
+        <p class="s-name">Bandejas y Suspensión</p>
+        <p class="s-desc">Reparación y reemplazo de bandejas y componentes de suspensión. Alineación incluida.</p>
+      </div>
+    </div>
+
+    <!-- 04 Masa -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">04</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
+      </svg>
+      <div>
+        <p class="s-name">Masa / Hubs</p>
+        <p class="s-desc">Reemplazo de cubos de rueda y rodamientos. Eliminamos ruidos, vibraciones y juego.</p>
+      </div>
+    </div>
+
+    <!-- 05 Frenos -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">05</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 3v2M12 19v2M3 12h2M19 12h2"/>
+      </svg>
+      <div>
+        <p class="s-name">Frenos</p>
+        <p class="s-desc">Pastillas, discos, líquido y revisión completa del sistema de frenado. Seguridad garantizada.</p>
+      </div>
+    </div>
+
+    <!-- 06 Embrague -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">06</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="7" cy="12" r="4"/>
+        <circle cx="17" cy="12" r="4"/>
+        <path d="M7 8V5M7 19v-3M17 8V5M17 19v-3"/>
+      </svg>
+      <div>
+        <p class="s-name">Kit de Embrague</p>
+        <p class="s-desc">Disco, plato de presión y rodamiento de empuje. Servicio completo con garantía.</p>
+      </div>
+    </div>
+
+    <!-- 07 Distribución -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">07</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <path d="M17 17h.01M17.5 10v4h-4"/>
+      </svg>
+      <div>
+        <p class="s-name">Kit de Distribución</p>
+        <p class="s-desc">Correa o cadena, tensor y polea tensora. Prevención de averías mayores.</p>
+      </div>
+    </div>
+
+    <!-- 08 Aceite -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">08</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2v6l3 3-3 3v6"/>
+        <path d="M6 9h2M6 15h2M16 9h2M16 15h2"/>
+        <rect x="5" y="5" width="14" height="14" rx="2"/>
+      </svg>
+      <div>
+        <p class="s-name">Aceite y Filtros</p>
+        <p class="s-desc">Cambio de aceite, filtro de aceite, aire, habitáculo y combustible. Revisión completa incluida.</p>
+      </div>
+    </div>
+
+    <!-- 09 Arranque / Alternador -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">09</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+      <div>
+        <p class="s-name">Motor de Arranque y Alternador</p>
+        <p class="s-desc">Diagnóstico, reparación o reemplazo del motor de partida y alternador. Sin sorpresas.</p>
+      </div>
+    </div>
+
+    <!-- 10 Aire acondicionado -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">10</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 2v4M12 2v4M16 2v4"/>
+        <path d="M3 10h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <path d="M7 14s.5 2 2.5 2S12 14 12 14s.5 2 2.5 2S17 14 17 14"/>
+      </svg>
+      <div>
+        <p class="s-name">Aire Acondicionado</p>
+        <p class="s-desc">Carga de gas, diagnóstico del compresor y reparación completa del sistema de A/C.</p>
+      </div>
+    </div>
+
+    <!-- 11 Diagnóstico -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">11</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21h8M12 17v4"/>
+        <path d="M9 8l2 2 4-4"/>
+      </svg>
+      <div>
+        <p class="s-name">Diagnóstico y Electricidad</p>
+        <p class="s-desc">Escáner OBD, reparación eléctrica, batería y sistemas electrónicos del vehículo.</p>
+      </div>
+    </div>
+
+    <!-- 12 Neumáticos -->
+    <div class="service-card">
+      <span class="s-num" aria-hidden="true">12</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="6"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+      <div>
+        <p class="s-name">Neumáticos</p>
+        <p class="s-desc">Montaje, equilibrado, alineación y asesoramiento en la elección del neumático adecuado.</p>
+      </div>
+    </div>
+
+    <!-- CTA card -->
+    <div class="service-card service-card--cta">
+      <span class="s-num" aria-hidden="true">+</span>
+      <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v8M8 12h8"/>
+      </svg>
+      <div>
+        <p class="s-name">¿Necesitas otra cosa?</p>
+        <p class="s-desc">Si no ves tu reparación aquí, consúltanos. Trabajamos en todo lo que tu vehículo necesite.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cta-strip">
+    <p><strong>¿Tienes una avería o necesitas mantenimiento?</strong><br>
+      Escríbenos por WhatsApp y te damos presupuesto sin compromiso — en Calpe o Benissa.</p>
+    <a href="https://wa.me/34627568631" class="btn-wa" target="_blank" rel="noopener noreferrer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Pedir Presupuesto
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <img src="logo.webp" alt="Fast Mechanics" class="footer-logo-img">
+    <nav class="footer-nav" aria-label="Links del pie">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#por-que">Por qué elegirnos</a>
+      <a href="index.html#ubicaciones">Ubicaciones</a>
+      <a href="https://www.instagram.com/fastmechanics1/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://wa.me/34627568631" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </nav>
+    <p class="footer-copy">
+      &copy; 2025 Fast Mechanics NR<br>
+      Calpe &amp; Benissa · Valencia, España
+    </p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
