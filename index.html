@@ -590,21 +590,30 @@
       gap: 1px;
     }
     .service-card {
-      background: var(--bg-card);
+      background: var(--bg-card) center/cover no-repeat;
       padding: 2.25rem 2rem;
       display: flex;
       flex-direction: column;
       gap: 1.1rem;
       position: relative;
       overflow: hidden;
+      min-height: 200px;
+      justify-content: flex-end;
       opacity: 0;
       transform: translateY(22px);
       transition:
         opacity 0.55s ease,
         transform 0.55s cubic-bezier(0.16,1,0.3,1),
-        background 0.25s ease;
+        background-color 0.25s ease;
     }
     .service-card.reveal { opacity: 1; transform: translateY(0); }
+    .service-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(9,9,15,0.97) 0%, rgba(9,9,15,0.65) 50%, rgba(9,9,15,0.3) 100%);
+      z-index: 0;
+      transition: opacity 0.3s;
+    }
     .service-card::after {
       content: '';
       position: absolute;
@@ -614,10 +623,16 @@
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.32s cubic-bezier(0.16,1,0.3,1);
+      z-index: 2;
     }
-    .service-card:hover { background: #16162a; }
+    .service-card:hover::before { opacity: 0.8; }
     .service-card:hover::after { transform: scaleX(1); }
     .service-card:hover .s-icon { color: var(--accent); }
+    .service-card .s-num,
+    .service-card .s-icon,
+    .service-card .s-name,
+    .service-card .s-desc,
+    .service-card > div { position: relative; z-index: 1; }
 
     .s-num {
       position: absolute;
@@ -1252,7 +1267,7 @@
     <div class="services-grid">
 
       <!-- 01 Mecánica general -->
-      <div class="service-card">
+      <div class="service-card" style="background-image:url('https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=600')">
         <span class="s-num" aria-hidden="true">01</span>
         <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
@@ -1264,7 +1279,7 @@
       </div>
 
       <!-- 02 Aceite y Filtros -->
-      <div class="service-card">
+      <div class="service-card" style="background-image:url('https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop&crop=bottom')">
         <span class="s-num" aria-hidden="true">02</span>
         <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 2v6l3 3-3 3v6"/>
@@ -1278,7 +1293,7 @@
       </div>
 
       <!-- 03 Frenos -->
-      <div class="service-card">
+      <div class="service-card" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80')">
         <span class="s-num" aria-hidden="true">03</span>
         <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="9"/>
@@ -1292,7 +1307,7 @@
       </div>
 
       <!-- 04 Aire Acondicionado -->
-      <div class="service-card">
+      <div class="service-card" style="background-image:url('https://images.pexels.com/photos/2244746/pexels-photo-2244746.jpeg?auto=compress&cs=tinysrgb&w=600')">
         <span class="s-num" aria-hidden="true">04</span>
         <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M8 2v4M12 2v4M16 2v4"/>
@@ -1306,7 +1321,7 @@
       </div>
 
       <!-- 05 Diagnóstico y electricidad -->
-      <div class="service-card">
+      <div class="service-card" style="background-image:url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=600&q=80')">
         <span class="s-num" aria-hidden="true">05</span>
         <svg class="s-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="2" y="3" width="20" height="14" rx="2"/>
