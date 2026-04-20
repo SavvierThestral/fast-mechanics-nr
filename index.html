@@ -750,6 +750,68 @@
     }
 
     /* ══════════════════════════════════════════
+       OPINIONES
+    ══════════════════════════════════════════ */
+    #opiniones {
+      padding: 7rem 0;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+    .opiniones-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      margin-bottom: 0;
+    }
+    .opiniones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 3rem;
+    }
+    .opinion-card {
+      background: var(--bg-card);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      transition: background 0.2s;
+    }
+    .opinion-card:hover { background: #16162a; }
+    .opinion-stars {
+      color: #F5C518;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+    }
+    .opinion-text {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.68;
+      flex: 1;
+    }
+    .opinion-author {
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+    .opinion-meta {
+      font-family: var(--font-label);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+    @media (max-width: 768px) {
+      .opiniones-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ══════════════════════════════════════════
        LOCATIONS
     ══════════════════════════════════════════ */
     #ubicaciones {
@@ -1463,6 +1525,90 @@
         <p class="t-desc">Revisamos tu vehículo sin coste para que sepas exactamente qué necesita antes de decidir.</p>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ── OPINIONES ──────────────────────────── -->
+<section id="opiniones" aria-labelledby="opiniones-title">
+  <div class="section-inner">
+    <p class="section-label label">Google Reviews</p>
+    <h2 class="opiniones-headline" id="opiniones-title">Lo que Dicen<br>Nuestros Clientes</h2>
+
+    <div class="opiniones-grid">
+
+      <div class="opinion-card">
+        <div class="opinion-stars">★★★★★</div>
+        <p class="opinion-text">"Somos de Madrid y en nuestras vacaciones nos levantamos un viernes con el espejo retrovisor izquierdo reventado. Llamamos a todos los talleres de Calpe y ninguno quería darnos una solución. Fueron los únicos que nos atendieron sin ninguna pega y nos hicieron un apaño que nos tranquilizó la vuelta. Buenos profesionales y sobre todo, buenas personas."</p>
+        <div>
+          <p class="opinion-author">Alba Navas</p>
+          <p class="opinion-meta">Local Guide · Hace 8 meses</p>
+        </div>
+      </div>
+
+      <div class="opinion-card">
+        <div class="opinion-stars">★★★★★</div>
+        <p class="opinion-text">"Acudimos por una emergencia, les explicamos la situación y en ese mismo momento nos ayudaron. Se pusieron a reparar el coche con un trato buenísimo, muy profesionales, solucionaron el problema. A partir de ahora cada vez que tenga algo con el coche lo volveré a llevar allí."</p>
+        <div>
+          <p class="opinion-author">Yago Gutierrez</p>
+          <p class="opinion-meta">Local Guide · Hace 2 meses</p>
+        </div>
+      </div>
+
+      <div class="opinion-card">
+        <div class="opinion-stars">★★★★★</div>
+        <p class="opinion-text">"Juan and his team worked magic – in just one day they had it fixed, and even managed to find rare parts that are hard to get in Spain. Professional, fast, and super friendly. Couldn't recommend them more – thank you guys, you saved me!"</p>
+        <div>
+          <p class="opinion-author">Arturs Orenits</p>
+          <p class="opinion-meta">Hace 6 meses</p>
+        </div>
+      </div>
+
+      <div class="opinion-card">
+        <div class="opinion-stars">★★★★★</div>
+        <p class="opinion-text">"Excelente taller. La atención es de primera, desde el primer momento te hacen sentir en confianza. Muy amables y profesionales, te explican con detalle el problema. Trabajan rapidísimo y con mucha eficacia, en poco tiempo tuve el coche listo y funcionando perfectamente."</p>
+        <div>
+          <p class="opinion-author">Cristian Vera</p>
+          <p class="opinion-meta">Hace 7 meses</p>
+        </div>
+      </div>
+
+      <div class="opinion-card">
+        <div class="opinion-stars">★★★★★</div>
+        <p class="opinion-text">"A los cinco minutos me presenté en el taller y me atendieron enseguida, solucionándome el problema en apenas media hora. Super amables y profesionales. Si tengo algún problema en Calpe con mi coche ya tengo claro donde debo acudir. De verdad ALTAMENTE AGRADECIDO."</p>
+        <div>
+          <p class="opinion-author">Ricardo Guarch Bonora</p>
+          <p class="opinion-meta">Hace 8 meses</p>
+        </div>
+      </div>
+
+      <div class="opinion-card">
+        <div class="opinion-stars">★★★★★</div>
+        <p class="opinion-text">"Tuve problemas con las pastillas del coche justo el día de regreso. Sin dudarlo me ayudaron sin mucha espera y resolvieron el problema esa misma tarde, siendo minuciosos y super amables. Gracias Juan por la atención de primera, siempre os recomendaré."</p>
+        <div>
+          <p class="opinion-author">Mighel Campusano Alcalde</p>
+          <p class="opinion-meta">Hace 7 meses</p>
+        </div>
+      </div>
+
+      <div class="opinion-card">
+        <div class="opinion-stars">★★★★★</div>
+        <p class="opinion-text">"Llegamos a Calpe con el coche averiado, día de fiesta y todos los talleres cerrados. El Sr. Juan nos recibió y solucionó nuestro problema. Nos atendieron como en casa, con mucha amabilidad. Excelentes profesionales, los recomiendo ampliamente."</p>
+        <div>
+          <p class="opinion-author">Jennife Chirinos</p>
+          <p class="opinion-meta">Hace 8 meses</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top:2rem;">
+      <a href="https://www.google.com/maps/search/Fast+Mechanics+Calpe" target="_blank" rel="noopener noreferrer" class="btn-ver-mas" style="font-size:0.85rem;">
+        Ver todas las opiniones en Google
+        <span class="arrow-glow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
     </div>
   </div>
 </section>
