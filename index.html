@@ -1209,6 +1209,29 @@
   </div>
 </div>
 
+<!-- ── STATS BANNER ───────────────────────── -->
+<div class="stats-banner" aria-label="Estadísticas">
+  <div class="stat-item">
+    <span class="stat-num" data-target="820" data-suffix="+">0</span>
+    <span class="stat-label">Vehículos Atendidos</span>
+  </div>
+  <div class="stat-divider" aria-hidden="true"></div>
+  <div class="stat-item">
+    <span class="stat-num" data-target="430" data-suffix="+">0</span>
+    <span class="stat-label">Clientes Satisfechos</span>
+  </div>
+  <div class="stat-divider" aria-hidden="true"></div>
+  <div class="stat-item">
+    <span class="stat-num" data-target="8" data-suffix="">0</span>
+    <span class="stat-label">Años de Experiencia</span>
+  </div>
+  <div class="stat-divider" aria-hidden="true"></div>
+  <div class="stat-item">
+    <span class="stat-num" data-target="1100" data-suffix="+">0</span>
+    <span class="stat-label">Servicios Completados</span>
+  </div>
+</div>
+
 <!-- ── SERVICES ───────────────────────────── -->
 <section id="servicios" aria-labelledby="servicios-title">
   <div class="section-inner">
@@ -1364,29 +1387,6 @@
     </div>
   </div>
 </section>
-
-<!-- ── STATS BANNER ───────────────────────── -->
-<div class="stats-banner" aria-label="Estadísticas">
-  <div class="stat-item">
-    <span class="stat-num">500<span class="stat-plus">+</span></span>
-    <span class="stat-label">Reparaciones</span>
-  </div>
-  <div class="stat-divider" aria-hidden="true"></div>
-  <div class="stat-item">
-    <span class="stat-num">350<span class="stat-plus">+</span></span>
-    <span class="stat-label">Clientes</span>
-  </div>
-  <div class="stat-divider" aria-hidden="true"></div>
-  <div class="stat-item">
-    <span class="stat-num">2</span>
-    <span class="stat-label">Talleres</span>
-  </div>
-  <div class="stat-divider" aria-hidden="true"></div>
-  <div class="stat-item">
-    <span class="stat-num">600<span class="stat-plus">+</span></span>
-    <span class="stat-label">Mantenimientos</span>
-  </div>
-</div>
 
 <!-- ── WHY US ─────────────────────────────── -->
 <section id="por-que" aria-labelledby="por-que-title">
@@ -1597,8 +1597,28 @@
     el.style.transitionDelay = `${i * 120}ms`;
     revealObs.observe(el);
   });
-  document.querySelectorAll('.stat-item').forEach(el => revealObs.observe(el));
   document.querySelectorAll('.reveal-block').forEach(el => revealObs.observe(el));
+
+  // Stats count-up animation
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      const duration = 1800;
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(ease * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      countObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => countObs.observe(el));
 </script>
 
 </body>
