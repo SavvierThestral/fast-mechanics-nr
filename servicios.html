@@ -80,7 +80,7 @@
       border-color: var(--border);
     }
     .nav-logo { display: flex; align-items: center; text-decoration: none; }
-    .nav-logo-img { height: 100px; width: auto; mix-blend-mode: screen; filter: brightness(1.05); }
+    .nav-logo-img { height: clamp(54px, 6vw, 82px); width: auto; mix-blend-mode: screen; filter: brightness(1.05); }
     .nav-right { display: flex; align-items: center; gap: 1.75rem; }
     .nav-home {
       font-family: var(--font-label); font-weight: 700; font-size: 0.82rem;
@@ -223,8 +223,8 @@
       .footer-copy { text-align: center; }
       .cta-strip { flex-direction: column; text-align: center; }
       #navbar { padding: 0 1.25rem; }
-      .nav-logo-img { height: 68px; }
-      .nav-right { gap: 1.1rem; }
+      .nav-logo-img { height: 60px; }
+      .nav-right { gap: 1rem; }
       .nav-wa { padding: 0.5rem 0.9rem; font-size: 0.76rem; }
     }
 
