@@ -1068,7 +1068,18 @@
       .footer-nav { justify-content: center; }
       .footer-copy { text-align: center; }
       .hero-loc-sep { display: none; }
-      #navbar { padding: 0.85rem 1.25rem; }
+      #navbar { padding: 0 1.25rem; }
+      .nav-logo-img { height: 68px; }
+      .nav-right { gap: 1.1rem; }
+      .nav-wa { padding: 0.5rem 0.9rem; font-size: 0.76rem; }
+    }
+
+    @media (max-width: 520px) {
+      .nav-hide-sm { display: none; }
+      .nav-logo-img { height: 58px; }
+      .nav-right { gap: 0.75rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { min-height: 180px; }
     }
 
     @media (max-width: 580px) {
@@ -1114,7 +1125,8 @@
     >
   </a>
   <div class="nav-right">
-    <a href="#sobre-nosotros" class="nav-servicios">Sobre Nosotros</a>
+    <a href="#" class="nav-servicios">Inicio</a>
+    <a href="#sobre-nosotros" class="nav-servicios nav-hide-sm">Sobre Nosotros</a>
     <a href="servicios.html" class="nav-servicios">Servicios</a>
     <a href="https://wa.me/34627568631"
        class="nav-wa"
@@ -1221,12 +1233,12 @@
 <!-- ── STATS BANNER ───────────────────────── -->
 <div class="stats-banner" aria-label="Estadísticas">
   <div class="stat-item">
-    <span class="stat-num" data-target="820" data-suffix="+">0</span>
+    <span class="stat-num" data-target="650" data-suffix="+">0</span>
     <span class="stat-label">Vehículos Atendidos</span>
   </div>
   <div class="stat-divider" aria-hidden="true"></div>
   <div class="stat-item">
-    <span class="stat-num" data-target="430" data-suffix="+">0</span>
+    <span class="stat-num" data-target="580" data-suffix="+">0</span>
     <span class="stat-label">Clientes Satisfechos</span>
   </div>
   <div class="stat-divider" aria-hidden="true"></div>
@@ -1236,7 +1248,7 @@
   </div>
   <div class="stat-divider" aria-hidden="true"></div>
   <div class="stat-item">
-    <span class="stat-num" data-target="1100" data-suffix="+">0</span>
+    <span class="stat-num" data-target="1200" data-suffix="+">0</span>
     <span class="stat-label">Servicios Completados</span>
   </div>
 </div>
